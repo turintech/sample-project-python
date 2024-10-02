@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 
 
@@ -14,9 +15,7 @@ class DoubleForLoop:
         """
         sum_ = 0
         for i in range(n):
-            for j in range(n):
-                if i == j:
-                    sum_ += i * j
+            sum_ += i * i
         return sum_
 
     @staticmethod
@@ -31,8 +30,7 @@ class DoubleForLoop:
         """
         sum_ = 0
         for i in range(n):
-            for j in range(i + 1):
-                sum_ += j
+            sum_ += (i * (i + 1)) // 2
         return sum_
 
     @staticmethod
@@ -47,16 +45,13 @@ class DoubleForLoop:
         Returns:
             int: Number of pairs in the array
         """
+        from collections import Counter
         count = 0
-        for i in range(len(arr)):
-            ndup = 0
-            for j in range(len(arr)):
-                if arr[i] == arr[j]:
-                    ndup += 1
-            if ndup == 2:
+        freq = Counter(arr)
+        for value in freq.values():
+            if value == 2:
                 count += 1
-
-        return count // 2
+        return count
 
     @staticmethod
     def count_duplicates(arr0: List[int], arr1: List[int]) -> int:
@@ -70,10 +65,10 @@ class DoubleForLoop:
             int: Number of duplicates between the two arrays
         """
         count = 0
-        for i in range(len(arr0)):
-            for j in range(len(arr1)):
-                if i == j and arr0[i] == arr1[j]:
-                    count += 1
+        min_len = min(len(arr0), len(arr1))
+        for i in range(min_len):
+            if arr0[i] == arr1[i]:
+                count += 1
         return count
 
     @staticmethod
@@ -86,8 +81,4 @@ class DoubleForLoop:
         Returns:
             int: Sum of matrix of integers
         """
-        sum_ = 0
-        for i in range(len(m)):
-            for j in range(len(m[i])):
-                sum_ += m[i][j]
-        return sum_
+        return sum(sum(row) for row in m)

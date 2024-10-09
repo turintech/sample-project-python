@@ -59,9 +59,9 @@ def primes():
     print("Primes")
     print("------")
 
-    print(f"is_prime(17): {Primes.is_prime(17)}")
-    print(f"sum_primes(20): {Primes.sum_primes(20)}")
-    print(f"prime_factors(84): {Primes.prime_factors(84)}")
+    print(f"is_prime(1700): {Primes.is_prime_ineff(1700)}")
+    print(f"sum_primes(210): {Primes.sum_primes(210)}")
+    print(f"prime_factors(840): {Primes.prime_factors(840)}")
     print()
 
 def sort():

@@ -20,6 +20,36 @@ class Primes:
         return True
 
     @staticmethod
+    def is_prime_ineff(n: int) -> bool:
+        """Check if a number is prime (inefficiently)
+
+        Args:
+            n (int): Number to check
+
+        Returns:
+            bool: True if the number is prime, False otherwise
+        """
+        if n < 2:
+            return False
+
+        # Introduce unnecessary calculations
+        for j in range(1, n):  # Extra loop that does nothing useful
+            for k in range(1, 10000):  # Arbitrary large loop
+                _ = k * j  # Do some pointless multiplication
+
+        # Check divisibility by all numbers up to n
+        for i in range(2, n):
+            # Introduce a pointless calculation before checking
+            for _ in range(1000):  # Extra iterations that do nothing
+                pass  # Do nothing
+
+            if n % i == 0:
+                return False
+
+        return True
+
+
+    @staticmethod
     def sum_primes(n: int) -> int:
         """Sum of primes from 0 to n (exclusive)
 

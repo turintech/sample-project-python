@@ -1,15 +1,14 @@
-# SqlQuery
+# SqlQuery 
 
 ## QueryAlbum
 
-Check if an album exists by performing a SELECT/WHERE
+Check if an album exists by using COUNT in a SELECT/WHERE
 
-- Selecting every column can be inefficient
-- SQL can count
+- Use COUNT when checking existence instead of selecting columns
+- SQL COUNT provides efficient existence checks
 
 ## JoinAlbums
 
 Join 3 of the tables
 
-- Explicit join is better
-
+- Use explicit JOIN syntax with proper ON conditions

@@ -3,32 +3,34 @@ from textwrap import dedent
 
 
 class SqlQuery:
-    @staticmethod
-    def query_album(name: str) -> bool:
-        """Check if an album exists
+    def __init__(self, db_path="data/chinook.db"):
+        self.db_path = db_path
+        self.conn = sqlite3.connect(self.db_path)
+        self.create_indexes()
 
-        Args:
-            name (str): Name of the album
+    def __enter__(self):
+        return self
 
-        Returns:
-            bool: True if the album exists, False otherwise
-        """
-        conn = sqlite3.connect("data/chinook.db")
-        cur = conn.cursor()
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.conn.close()
 
-        cur.execute(f"SELECT * FROM Album WHERE Title = '{name}'")
-        return len(cur.fetchall()) > 0
+    def create_indexes(self):
+        """Create indexes once on class initialization."""
+        cur = self.conn.cursor()
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_album_title ON Album (Title)")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_album_albumid ON Album (AlbumId)")
+        cur.execute("CREATE INDEX IF NOT EXISTS idx_artist_artistid ON Artist (ArtistId)")
+        self.conn.commit()
 
-    @staticmethod
-    def join_albums() -> list:
-        """Join the Album, Artist, and Track tables
+    def query_album(self, name: str) -> bool:
 
-        Returns:
-            list:
-        """
-        conn = sqlite3.connect("data/chinook.db")
-        cur = conn.cursor()
+        cur = self.conn.cursor()
+        cur.execute(f"SELECT 1 FROM Album WHERE Title = '{name}'")
+        return cur.fetchone() is not None
 
+    def join_albums(self) -> list:
+
+        cur = self.conn.cursor()
         cur.execute(
             dedent(
                 """\
@@ -51,15 +53,13 @@ class SqlQuery:
         )
         return cur.fetchall()
 
-    @staticmethod
-    def top_invoices() -> list:
+    def top_invoices(self) -> list:
         """Get the top 10 invoices by total
 
         Returns:
             list: List of tuples
         """
-        conn = sqlite3.connect("data/chinook.db")
-        cur = conn.cursor()
+        cur = self.conn.cursor()
 
         cur.execute(
             dedent(

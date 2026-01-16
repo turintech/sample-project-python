@@ -4,20 +4,7 @@ from typing import List
 class DoubleForLoop:
     @staticmethod
     def sum_square(n: int) -> int:
-        """Sum of squares of numbers from 0 to n (exclusive)
-
-        Args:
-            n (int): Number to sum up to
-
-        Returns:
-            int: Sum of squares of numbers from 0 to n
-        """
-        sum_ = 0
-        for i in range(n):
-            for j in range(n):
-                if i == j:
-                    sum_ += i * j
-        return sum_
+        return sum(i * i for i in range(n))
 
     @staticmethod
     def sum_triangle(n: int) -> int:

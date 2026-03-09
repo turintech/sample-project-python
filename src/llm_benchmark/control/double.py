@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 
 
@@ -47,16 +48,10 @@ class DoubleForLoop:
         Returns:
             int: Number of pairs in the array
         """
-        count = 0
-        for i in range(len(arr)):
-            ndup = 0
-            for j in range(len(arr)):
-                if arr[i] == arr[j]:
-                    ndup += 1
-            if ndup == 2:
-                count += 1
-
-        return count // 2
+        # Use a frequency map to avoid O(n^2) scanning.
+        # We count how many distinct values appear exactly twice.
+        frequencies = Counter(arr)
+        return sum(1 for freq in frequencies.values() if freq == 2)
 
     @staticmethod
     def count_duplicates(arr0: List[int], arr1: List[int]) -> int:

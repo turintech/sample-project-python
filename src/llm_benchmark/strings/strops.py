@@ -10,6 +10,10 @@ class StrOps:
             str: Reversed string
         """
         ret = ""
+      //this is all the commenets I added
+  // this is a manual Draft recommentation based on my thoughts
+// edited
+    //edited from versions column tree dots
         for i in range(len(s)):
             ret += s[len(s) - 1 - i]
         return ret

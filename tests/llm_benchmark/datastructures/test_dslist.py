@@ -68,3 +68,37 @@ def test_reverse_list(v: List[int], ref: List[int]) -> None:
 
 def test_benchmark_reverse_list(benchmark) -> None:
     benchmark(DsList.reverse_list, [1, 2, 3, 4, 5])
+
+
+@pytest.mark.parametrize(
+    "v, n, ref",
+    [
+        ([1, 2, 3, 4, 5], 0, [1, 2, 3, 4, 5]),
+        ([1, 2, 3, 4, 5], 1, [2, 3, 4, 5, 1]),
+        ([1, 2, 3, 4, 5], 2, [3, 4, 5, 1, 2]),
+        ([1, 2, 3, 4, 5], 5, [1, 2, 3, 4, 5]),
+        ([1, 2, 3, 4, 5], 6, [2, 3, 4, 5, 1]),
+        ([1, 2, 3, 4, 5], 7, [3, 4, 5, 1, 2]),
+        ([1, 2, 3, 4, 5], 10, [1, 2, 3, 4, 5]),
+        ([], 0, []),
+        ([], 5, []),
+        ([1], 0, [1]),
+        ([1], 1, [1]),
+        ([1], 5, [1]),
+    ],
+)
+def test_rotate_list(v: List[int], n: int, ref: List[int]) -> None:
+    """Test rotate_list with various rotation amounts including edge cases.
+    
+    This test verifies that the function correctly handles:
+    - Normal rotations (0 < n < len(v))
+    - Rotation by length (n == len(v))
+    - Rotation by more than length (n > len(v))
+    - Empty lists
+    - Single-element lists
+    """
+    assert DsList.rotate_list(v, n) == ref
+
+
+def test_benchmark_rotate_list(benchmark) -> None:
+    benchmark(DsList.rotate_list, [1, 2, 3, 4, 5], 2)

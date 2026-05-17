@@ -1,6 +1,7 @@
 from typing import List
 
 
+
 class Primes:
     @staticmethod
     def is_prime(n: int) -> bool:
@@ -14,7 +15,7 @@ class Primes:
         """
         if n < 2:
             return False
-        for i in range(2, n):
+        for i in range(2, int(n ** 0.5) + 1):
             if n % i == 0:
                 return False
         return True
@@ -60,7 +61,7 @@ class Primes:
             int: Sum of primes from 0 to n
         """
         sum_ = 0
-        for i in range(n):
+        for i in range(2, n):
             if Primes.is_prime(i):
                 sum_ += i
         return sum_
@@ -76,10 +77,13 @@ class Primes:
             List[int]: List of prime factors
         """
         ret = []
-        while n > 1:
-            for i in range(2, n + 1):
-                if n % i == 0:
-                    ret.append(i)
-                    n = n // i
-                    break
+        i = 2
+        while i * i <= n:
+            if n % i:
+                i += 1
+            else:
+                n //= i
+                ret.append(i)
+        if n > 1:
+            ret.append(n)
         return ret

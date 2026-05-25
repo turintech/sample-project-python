@@ -13,11 +13,11 @@ class SqlQuery:
         Returns:
             bool: True if the album exists, False otherwise
         """
-        conn = sqlite3.connect("data/chinook.db")
-        cur = conn.cursor()
+        with sqlite3.connect("data/chinook.db") as conn:
+            cur = conn.cursor()
 
-        cur.execute(f"SELECT * FROM Album WHERE Title = '{name}'")
-        return len(cur.fetchall()) > 0
+            cur.execute(f"SELECT * FROM Album WHERE Title = '{name}'")
+            return len(cur.fetchall()) > 0
 
     @staticmethod
     def join_albums() -> list:
@@ -26,30 +26,30 @@ class SqlQuery:
         Returns:
             list:
         """
-        conn = sqlite3.connect("data/chinook.db")
-        cur = conn.cursor()
+        with sqlite3.connect("data/chinook.db") as conn:
+            cur = conn.cursor()
 
-        cur.execute(
-            dedent(
-                """\
-                SELECT 
-                    t.Name AS TrackName, (
-                        SELECT a2.Title 
-                        FROM Album a2 
-                        WHERE a2.AlbumId = t.AlbumId
-                    ) AS AlbumName, 
-                    (
-                        SELECT ar.Name 
-                        FROM Artist ar
-                        JOIN Album a3 ON a3.ArtistId = ar.ArtistId
-                        WHERE a3.AlbumId = t.AlbumId
-                    ) AS ArtistName
-                FROM 
-                    Track t
-                """
+            cur.execute(
+                dedent(
+                    """\
+                    SELECT 
+                        t.Name AS TrackName, (
+                            SELECT a2.Title 
+                            FROM Album a2 
+                            WHERE a2.AlbumId = t.AlbumId
+                        ) AS AlbumName, 
+                        (
+                            SELECT ar.Name 
+                            FROM Artist ar
+                            JOIN Album a3 ON a3.ArtistId = ar.ArtistId
+                            WHERE a3.AlbumId = t.AlbumId
+                        ) AS ArtistName
+                    FROM 
+                        Track t
+                    """
+                )
             )
-        )
-        return cur.fetchall()
+            return cur.fetchall()
 
     @staticmethod
     def top_invoices() -> list:
@@ -58,21 +58,21 @@ class SqlQuery:
         Returns:
             list: List of tuples
         """
-        conn = sqlite3.connect("data/chinook.db")
-        cur = conn.cursor()
+        with sqlite3.connect("data/chinook.db") as conn:
+            cur = conn.cursor()
 
-        cur.execute(
-            dedent(
-                """\
-                SELECT 
-                    i.InvoiceId, 
-                    c.FirstName || ' ' || c.LastName AS CustomerName, 
-                    i.Total
-                FROM 
-                    Invoice i
-                JOIN Customer c ON c.CustomerId = i.CustomerId
-                ORDER BY i.Total DESC
-                """
+            cur.execute(
+                dedent(
+                    """\
+                    SELECT 
+                        i.InvoiceId, 
+                        c.FirstName || ' ' || c.LastName AS CustomerName, 
+                        i.Total
+                    FROM 
+                        Invoice i
+                    JOIN Customer c ON c.CustomerId = i.CustomerId
+                    ORDER BY i.Total DESC
+                    """
+                )
             )
-        )
-        return cur.fetchall()[:10]
+            return cur.fetchall()[:10]

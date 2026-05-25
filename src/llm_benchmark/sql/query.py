@@ -1,7 +1,6 @@
 import sqlite3
 from textwrap import dedent
 
-
 class SqlQuery:
     @staticmethod
     def query_album(name: str) -> bool:
@@ -16,8 +15,10 @@ class SqlQuery:
         conn = sqlite3.connect("data/chinook.db")
         cur = conn.cursor()
 
-        cur.execute(f"SELECT * FROM Album WHERE Title = '{name}'")
-        return len(cur.fetchall()) > 0
+        cur.execute("SELECT 1 FROM Album WHERE Title = ?", (name,))
+        result = cur.fetchone()
+        conn.close()
+        return result is not None
 
     @staticmethod
     def join_albums() -> list:
@@ -33,23 +34,19 @@ class SqlQuery:
             dedent(
                 """\
                 SELECT 
-                    t.Name AS TrackName, (
-                        SELECT a2.Title 
-                        FROM Album a2 
-                        WHERE a2.AlbumId = t.AlbumId
-                    ) AS AlbumName, 
-                    (
-                        SELECT ar.Name 
-                        FROM Artist ar
-                        JOIN Album a3 ON a3.ArtistId = ar.ArtistId
-                        WHERE a3.AlbumId = t.AlbumId
-                    ) AS ArtistName
+                    t.Name AS TrackName, 
+                    a2.Title AS AlbumName, 
+                    ar.Name AS ArtistName
                 FROM 
                     Track t
+                JOIN Album a2 ON a2.AlbumId = t.AlbumId
+                JOIN Artist ar ON ar.ArtistId = a2.ArtistId
                 """
             )
         )
-        return cur.fetchall()
+        result = cur.fetchall()
+        conn.close()
+        return result
 
     @staticmethod
     def top_invoices() -> list:
@@ -72,7 +69,10 @@ class SqlQuery:
                     Invoice i
                 JOIN Customer c ON c.CustomerId = i.CustomerId
                 ORDER BY i.Total DESC
+                LIMIT 10
                 """
             )
         )
-        return cur.fetchall()[:10]
+        result = cur.fetchall()
+        conn.close()
+        return result

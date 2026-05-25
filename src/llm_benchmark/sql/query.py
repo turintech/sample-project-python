@@ -16,8 +16,10 @@ class SqlQuery:
         conn = sqlite3.connect("data/chinook.db")
         cur = conn.cursor()
 
-        cur.execute(f"SELECT * FROM Album WHERE Title = '{name}'")
-        return len(cur.fetchall()) > 0
+        cur.execute("SELECT EXISTS(SELECT 1 FROM Album WHERE Title = ?)", (name,))
+        exists = cur.fetchone()[0]
+        conn.close()
+        return exists
 
     @staticmethod
     def join_albums() -> list:

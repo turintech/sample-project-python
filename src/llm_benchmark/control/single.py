@@ -5,17 +5,14 @@ class SingleForLoop:
     @staticmethod
     def sum_range(n: int) -> int:
         """Sum of range of numbers from 0 to n
-
+    
         Args:
             n (int): Number to sum up to
-
+    
         Returns:
             int: Sum of range of numbers from 0 to n
         """
-        arr = []
-        for i in range(n):
-            arr.append(i)
-        return sum(arr)
+        return sum(range(n))
 
     @staticmethod
     def max_list(v: List[int]) -> int:

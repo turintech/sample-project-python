@@ -48,12 +48,6 @@ class Sort:
         tmp = v.copy()
         ret = [-maxsize - 1] * n
         for i in range(n):
-            max_val = tmp[0]
-            max_idx = 0
-            for j in range(1, len(tmp)):
-                if tmp[j] > max_val:
-                    max_val = tmp[j]
-                    max_idx = j
-            ret[i] = max_val
+            max_idx = max(range(len(tmp)), key=tmp.__getitem__)
+            ret[i] = tmp[max_idx]
             tmp.pop(max_idx)
-        return ret

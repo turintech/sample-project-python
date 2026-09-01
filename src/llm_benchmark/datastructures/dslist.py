@@ -45,13 +45,7 @@ class DsList:
         Returns:
             List[int]: Sorted list of integers
         """
-        ret = v.copy()
-        for i in range(len(ret)):
-            for j in range(i + 1, len(ret)):
-                if ret[i] > ret[j]:
-                    ret[i], ret[j] = ret[j], ret[i]
-
-        return ret
+        return sorted(v)
 
     @staticmethod
     def reverse_list(v: List[int]) -> List[int]:

@@ -37,19 +37,13 @@ class SqlQuery:
                 dedent(
                     """\
                     SELECT
-                        t.Name AS TrackName, (
-                            SELECT a2.Title
-                            FROM Album a2
-                            WHERE a2.AlbumId = t.AlbumId
-                        ) AS AlbumName,
-                        (
-                            SELECT ar.Name
-                            FROM Artist ar
-                            JOIN Album a3 ON a3.ArtistId = ar.ArtistId
-                            WHERE a3.AlbumId = t.AlbumId
-                        ) AS ArtistName
+                        t.Name AS TrackName,
+                        a.Title AS AlbumName,
+                        ar.Name AS ArtistName
                     FROM
                         Track t
+                    JOIN Album a ON a.AlbumId = t.AlbumId
+                    JOIN Artist ar ON ar.ArtistId = a.ArtistId
                     """
                 )
             )

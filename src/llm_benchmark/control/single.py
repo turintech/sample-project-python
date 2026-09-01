@@ -27,11 +27,7 @@ class SingleForLoop:
         Returns:
             int: Maximum value in the vector
         """
-        max_val = v[0]
-        for i in range(1, len(v)):
-            if v[i] > max_val:
-                max_val = v[i]
-        return max_val
+        return max(v)
 
     @staticmethod
     def sum_modulus(n: int, m: int) -> int:

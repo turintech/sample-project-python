@@ -12,12 +12,7 @@ class DoubleForLoop:
         Returns:
             int: Sum of squares of numbers from 0 to n
         """
-        sum_ = 0
-        for i in range(n):
-            for j in range(n):
-                if i == j:
-                    sum_ += i * j
-        return sum_
+        return sum(i * i for i in range(n))
 
     @staticmethod
     def sum_triangle(n: int) -> int:
@@ -29,11 +24,7 @@ class DoubleForLoop:
         Returns:
             int: Sum of triangle of numbers from 0 to n
         """
-        sum_ = 0
-        for i in range(n):
-            for j in range(i + 1):
-                sum_ += j
-        return sum_
+        return sum(i * (i + 1) // 2 for i in range(n))
 
     @staticmethod
     def count_pairs(arr: List[int]) -> int:
